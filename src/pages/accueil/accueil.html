@@ -6,10 +6,15 @@
 -->
 <ion-header>
   <ion-navbar>
-    <ion-title>accueil</ion-title>
+    <ion-title>Accueil</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-
+  <ion-list>
+    <ion-card ion-item *ngFor="let annonce of annonces" (click)="onLoadAd(annonce)">
+      <ion-card-header> {{annonce.nom}}</ion-card-header>
+      <ion-card-content>{{annonce.prix}}DT</ion-card-content>
+    </ion-card >
+  </ion-list>
 </ion-content>

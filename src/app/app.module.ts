@@ -10,6 +10,7 @@ import { ReglagesPage } from '../pages/reglages/reglages';
 import { MonProfilPage } from '../pages/mon-profil/mon-profil';
 import { AccueilPage } from '../pages/accueil/accueil';
 import { TabsPage } from '../pages/tabs/tabs';
+import { AnnoncePage } from '../pages/annonce/annonce';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { TabsPage } from '../pages/tabs/tabs';
     ReglagesPage,
     MonProfilPage,
     AccueilPage,
+    AnnoncePage,
     TabsPage
   ],
   imports: [
@@ -31,6 +33,7 @@ import { TabsPage } from '../pages/tabs/tabs';
     ReglagesPage,
     MonProfilPage,
     AccueilPage,
+    AnnoncePage,
     TabsPage
   ],
   providers: [

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { AnnoncePage } from '../annonce/annonce';
 
 /**
  * Generated class for the AccueilPage page.
@@ -15,11 +16,23 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class AccueilPage {
 
+  annonces=[
+    {
+      nom:"Vélo",
+      prix:200,
+      description:"lorem upsum"
+    },
+    {
+      nom:"radio",
+      prix:30,
+      description:"lorem upsum"
+    }
+  ]
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad AccueilPage');
+  onLoadAd(annonce:{nom:string,prix:number,description:string}){
+    this.navCtrl.push(AnnoncePage,{annonce:annonce});
   }
 
 }
