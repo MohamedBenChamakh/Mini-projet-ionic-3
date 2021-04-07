@@ -10,7 +10,8 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content >
+  <ion-searchbar placeholder="Recherche..."  (ionInput)="getItems($event)"></ion-searchbar>
   <ion-list>
     <ion-card ion-item *ngFor="let annonce of annonces" (click)="onLoadAd(annonce)">
       <ion-card-header> {{annonce.nom}}</ion-card-header>

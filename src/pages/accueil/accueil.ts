@@ -31,4 +31,17 @@ export class AccueilPage {
     this.navCtrl.push(AnnoncePage,{annonce:annonce});
   }
 
+  getItems(event:any){
+
+    this.ionViewWillEnter();
+
+    const valeur=event.target.value;
+
+    if(valeur && valeur.trim()!= ''){
+      this.annonces=this.annonces.filter((annonce)=>{
+        return (annonce.nom.toLowerCase().indexOf(valeur.toLowerCase()))>-1;
+      })
+    }
+  }
+
 }
