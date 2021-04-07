@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Annonce } from '../../models/Annonce';
 import { AnnoncePage } from '../annonce/annonce';
 
 /**
@@ -16,7 +17,7 @@ import { AnnoncePage } from '../annonce/annonce';
 })
 export class AccueilPage {
 
-  annonces=[
+  annonces : Annonce[]=[
     {
       nom:"Vélo",
       prix:200,

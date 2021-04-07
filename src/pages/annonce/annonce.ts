@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Annonce } from '../../models/Annonce';
 
 /**
  * Generated class for the AnnoncePage page.
@@ -14,11 +15,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'annonce.html',
 })
 export class AnnoncePage implements OnInit{
-  annonce :{
-    nom:string,
-    prix:number,
-    description:string
-  }
+  annonce : Annonce;
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
   ngOnInit(): void {
