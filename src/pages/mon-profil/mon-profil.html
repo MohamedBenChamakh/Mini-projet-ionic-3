@@ -11,5 +11,7 @@
 </ion-header>
 
 <ion-content padding>
-
+  <button ion-button (click)="openGallery()">Ouvrir la gallerie</button>
+  <button ion-button (click)="openCamera()">Ouvrir la camera</button>
+  <img [src]="base64Image" />
 </ion-content>
