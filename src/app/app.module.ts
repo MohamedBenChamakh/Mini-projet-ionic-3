@@ -11,6 +11,7 @@ import { MonProfilPage } from '../pages/mon-profil/mon-profil';
 import { AccueilPage } from '../pages/accueil/accueil';
 import { TabsPage } from '../pages/tabs/tabs';
 import { AnnoncePage } from '../pages/annonce/annonce';
+import { AnnoncesServices } from '../pages/services/annonces.service';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { AnnoncePage } from '../pages/annonce/annonce';
     TabsPage
   ],
   providers: [
+    AnnoncesServices,
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler}

@@ -17,18 +17,8 @@ import { AnnoncePage } from '../annonce/annonce';
 })
 export class AccueilPage {
 
-  annonces : Annonce[]=[
-    {
-      nom:"Vélo",
-      prix:200,
-      description:"lorem upsum"
-    },
-    {
-      nom:"radio",
-      prix:30,
-      description:"lorem upsum"
-    }
-  ]
+  annonces : Annonce[];
+
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
