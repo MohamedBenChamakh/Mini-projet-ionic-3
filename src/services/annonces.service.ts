@@ -1,4 +1,4 @@
-import { Annonce } from "../../models/Annonce";
+import { Annonce } from "../models/Annonce";
 
 
 

@@ -11,29 +11,20 @@
 </ion-header>
 
 <ion-content padding>
-
-  <ion-card>
-    <ion-card-header>
-      Connexion
-    </ion-card-header>
-    <ion-card-content>
-      <ion-list>
-
-        <ion-item>
-          <ion-label floating>Email</ion-label>
-          <ion-input type="text"></ion-input>
-        </ion-item>
-      
-        <ion-item>
-          <ion-label floating>Mot de passe</ion-label>
-          <ion-input type="password"></ion-input>
-        </ion-item>
+      <form [formGroup]="userForm">
+        <ion-list>
+          <ion-item-divider>Connexion</ion-item-divider>
+          <ion-item>
+            <ion-label floating>Email</ion-label>
+            <ion-input type="text"  formControlName="email" ></ion-input>
+          </ion-item>
         
-        <ion-item>
-          <button ion-button float-right>Se connecter</button>
-        </ion-item>
-
-      </ion-list>
-    </ion-card-content>
-  </ion-card>
+          <ion-item>
+            <ion-label floating>Mot de passe</ion-label>
+            <ion-input type="password" formControlName="passwd"></ion-input>
+          </ion-item>
+        </ion-list>
+        <p color="danger">{{errorMessage}}</p>
+        <button ion-button float-right block margin-top color="dark" [disabled]="userForm.invalid" (click)=" onSubmitSignIn()">Se connecter</button>
+    </form>
 </ion-content>

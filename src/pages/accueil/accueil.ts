@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Annonce } from '../../models/Annonce';
+import { AnnoncesServices } from '../../services/annonces.service';
 import { AnnoncePage } from '../annonce/annonce';
-import { AnnoncesServices } from '../services/annonces.service';
 
 /**
  * Generated class for the AccueilPage page.
