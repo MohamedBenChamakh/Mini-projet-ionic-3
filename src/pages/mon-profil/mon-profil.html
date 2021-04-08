@@ -11,7 +11,33 @@
 </ion-header>
 
 <ion-content padding>
-  <button ion-button (click)="openGallery()">Ouvrir la gallerie</button>
-  <button ion-button (click)="openCamera()">Ouvrir la camera</button>
-  <img [src]="base64Image" />
+  <img src="../../assets/imgs/image.png" width=150/>
+  <ion-list >
+    <ion-list-header>Informations personnelles </ion-list-header>
+    <ion-item>
+      <ion-icon name="md-contact" item-start></ion-icon>
+        Nom : {{ utilisateur.nom }}
+    </ion-item>
+    <ion-item>
+      <ion-icon name="" item-start></ion-icon>
+        Prénom : {{ utilisateur.prenom }}
+    </ion-item>
+    <ion-item>
+      <ion-icon name="md-mail" item-start></ion-icon>
+        Email : {{ utilisateur.email }}
+    </ion-item>
+    <ion-item>
+      <ion-icon name="" item-start></ion-icon>
+        Telephone : {{ utilisateur.tel }}
+    </ion-item>
+  </ion-list>
+
+  <ion-fab bottom right >
+    <button ion-fab ><ion-icon name="add"></ion-icon></button>
+    <ion-fab-list side="left">
+      <button ion-fab><ion-icon name="md-camera" (click)="openCamera()"></ion-icon></button>
+      <button ion-fab><ion-icon name="md-photos"  (click)="openGallery()"></ion-icon></button>
+    </ion-fab-list>
+  </ion-fab>
+
 </ion-content>

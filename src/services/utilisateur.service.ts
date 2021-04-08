@@ -28,11 +28,11 @@ export class UtilisateurService{
     SignIn(email:string,passwd:string){
        return new Promise(
            (resolve,reject)=>{
-               /* this.utilisateur=this.utilisateurs.find(element=>{
-                  element.email==email && element.passwd==passwd
+                this.utilisateur=this.utilisateurs.find(function(element){
+                 return (element.email==email && element.passwd==passwd)
                 } );
                 if(this.utilisateur!=null) resolve(this.utilisateur);
-                reject(null);*/
+                reject(null);
            }
        ) 
     }

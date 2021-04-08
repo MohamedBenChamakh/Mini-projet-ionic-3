@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Utilisateur } from '../../models/Utilisateur';
+import { UtilisateurService } from '../../services/utilisateur.service';
 
 /**
  * Generated class for the MonProfilPage page.
@@ -16,12 +18,20 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   providers: [Camera]
 })
 export class MonProfilPage {
-  base64Image;
-  constructor(public navCtrl: NavController, public navParams: NavParams,private camera:Camera) {
+  utilisateur:Utilisateur= {
+    id:0,
+    nom:"Ben Chamakh",
+    prenom:"Mohamed",
+    email:"mohamed@gmail.com",
+    passwd:"mohamed123",
+    tel:"12345678"
+};
+  
+  constructor(public navCtrl: NavController, public navParams: NavParams,private camera:Camera,private userService:UtilisateurService) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad MonProfilPage');
+ //   this.utilisateur=this.userService.utilisateur;
   }
 
 
@@ -36,7 +46,7 @@ export class MonProfilPage {
     this.camera.getPicture(options).then((imageData) => {
      // imageData is either a base64 encoded string or a file URI
      // If it's base64 (DATA_URL):
-     this.base64Image = 'data:image/jpeg;base64,' + imageData;
+    // this.base64Image = 'data:image/jpeg;base64,' + imageData;
     }, (err) => {
      // Handle error
     });
@@ -54,7 +64,7 @@ export class MonProfilPage {
     this.camera.getPicture(options).then((imageData) => {
      // imageData is either a base64 encoded string or a file URI
      // If it's base64 (DATA_URL):
-     this.base64Image = 'data:image/jpeg;base64,' + imageData;
+    // this.base64Image = 'data:image/jpeg;base64,' + imageData;
     }, (err) => {
      // Handle error
     });

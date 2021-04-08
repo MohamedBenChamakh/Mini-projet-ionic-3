@@ -8,12 +8,14 @@ export class AnnoncesServices{
     {
       nom:"Vélo",
       prix:200,
-      description:"lorem upsum"
+      description:"lorem upsum",
+      photo:null
     },
     {
       nom:"radio",
       prix:30,
-      description:"lorem upsum"
+      description:"lorem upsum",
+      photo:null
     }
   ]
 
