@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, LoadingController, NavController, NavParams } from 'ionic-angular';
 import { AuthService } from '../../services/auth.service';
 
 /**
@@ -20,7 +20,12 @@ export class ReglagesPage implements OnInit{
   userForm:FormGroup;
   errorMessage:string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,private formBuilder:FormBuilder,private authService:AuthService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,private loadingCtrl:LoadingController,private formBuilder:FormBuilder,private authService:AuthService) {
+    const loader = this.loadingCtrl.create({
+      content: "chargement...",
+      duration: 150
+    });
+    loader.present();
   }
 
   ngOnInit(): void {

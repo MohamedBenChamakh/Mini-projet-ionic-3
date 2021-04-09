@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Camera, CameraOptions } from '@ionic-native/camera';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, LoadingController, NavController, NavParams } from 'ionic-angular';
 import { Subscription } from 'rxjs/Subscription';
 import { Annonce } from '../../models/Annonce';
 import { Utilisateur } from '../../models/Utilisateur';
@@ -25,7 +25,12 @@ export class MonProfilPage {
   annonces:Annonce[];
   annoncesSubscription:Subscription;
   
-  constructor(public navCtrl: NavController, public navParams: NavParams,private camera:Camera,private annonceService:AnnoncesServices,private authService:AuthService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,private loadingCtrl:LoadingController,private camera:Camera,private annonceService:AnnoncesServices,private authService:AuthService) {
+    const loader = this.loadingCtrl.create({
+      content: "chargement...",
+      duration: 150
+    });
+    loader.present();
     this.utilisateur=new Utilisateur(+sessionStorage.getItem('id'),sessionStorage.getItem('nom'),sessionStorage.getItem('prenom'),sessionStorage.getItem('email'),sessionStorage.getItem('passwd'),sessionStorage.getItem('tel'));
     this.annoncesSubscription=this.annonceService.annoncesSubject.subscribe(
       (annonces:Annonce[])=>{

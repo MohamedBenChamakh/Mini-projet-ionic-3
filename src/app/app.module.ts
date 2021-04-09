@@ -13,6 +13,7 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { AnnoncePage } from '../pages/annonce/annonce';
 import { AnnoncesServices } from '../services/annonces.service';
 import { AuthService } from '../services/auth.service';
+import { AjoutAnnoncePage } from '../pages/ajout-annonce/ajout-annonce';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { AuthService } from '../services/auth.service';
     MonProfilPage,
     AccueilPage,
     AnnoncePage,
-    TabsPage
+    TabsPage,
+    AjoutAnnoncePage
   ],
   imports: [
     BrowserModule,
@@ -36,7 +38,8 @@ import { AuthService } from '../services/auth.service';
     MonProfilPage,
     AccueilPage,
     AnnoncePage,
-    TabsPage
+    TabsPage,
+    AjoutAnnoncePage
   ],
   providers: [
     AnnoncesServices,

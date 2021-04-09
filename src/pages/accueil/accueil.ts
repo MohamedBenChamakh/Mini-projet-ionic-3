@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, LoadingController, NavController, NavParams } from 'ionic-angular';
 import { Annonce } from '../../models/Annonce';
 import { AnnoncesServices } from '../../services/annonces.service';
 import { AnnoncePage } from '../annonce/annonce';
@@ -20,7 +20,12 @@ export class AccueilPage {
 
   annonces : Annonce[];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,private annonceService:AnnoncesServices) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,private loadingCtrl:LoadingController ,private annonceService:AnnoncesServices) {
+    const loader = this.loadingCtrl.create({
+      content: "chargement...",
+      duration: 150
+    });
+    loader.present();
   }
 
   ionViewWillEnter(){
