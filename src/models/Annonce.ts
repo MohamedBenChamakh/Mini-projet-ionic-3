@@ -1,3 +1,4 @@
+import { Utilisateur } from "./Utilisateur";
 
 
 
@@ -7,5 +8,6 @@ export class Annonce{
         public nom:string,
         public prix:number,
         public description:string,
-        public photo:string){}
+        public photo:string,
+        public utilisateur:Utilisateur){}
 }

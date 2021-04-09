@@ -11,20 +11,23 @@
 </ion-header>
 
 <ion-content padding>
-      <form [formGroup]="userForm">
+
+      <form [formGroup]="userForm" *ngIf="!Authentificated()">
         <ion-list>
           <ion-item-divider>Connexion</ion-item-divider>
           <ion-item>
             <ion-label floating>Email</ion-label>
-            <ion-input type="text"  formControlName="email" ></ion-input>
+            <ion-input type="text" color="secondary" formControlName="email" ></ion-input>
           </ion-item>
         
           <ion-item>
             <ion-label floating>Mot de passe</ion-label>
-            <ion-input type="password" formControlName="passwd"></ion-input>
+            <ion-input type="password" [clearOnEdit]="true" formControlName="passwd"></ion-input>
           </ion-item>
         </ion-list>
         <p color="danger">{{errorMessage}}</p>
         <button ion-button float-right block margin-top color="dark" [disabled]="userForm.invalid" (click)=" onSubmitSignIn()">Se connecter</button>
     </form>
+
+    <button ion-button full *ngIf="Authentificated()" (click)="LogOut()">Se deconnecter</button>
 </ion-content>

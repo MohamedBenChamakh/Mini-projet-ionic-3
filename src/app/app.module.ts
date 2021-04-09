@@ -12,7 +12,7 @@ import { AccueilPage } from '../pages/accueil/accueil';
 import { TabsPage } from '../pages/tabs/tabs';
 import { AnnoncePage } from '../pages/annonce/annonce';
 import { AnnoncesServices } from '../services/annonces.service';
-import { UtilisateurService } from '../services/utilisateur.service';
+import { AuthService } from '../services/auth.service';
 
 @NgModule({
   declarations: [
@@ -39,8 +39,8 @@ import { UtilisateurService } from '../services/utilisateur.service';
     TabsPage
   ],
   providers: [
-    UtilisateurService,
     AnnoncesServices,
+    AuthService,
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler}

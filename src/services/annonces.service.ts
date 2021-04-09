@@ -1,25 +1,18 @@
+import { Subject } from "rxjs/Subject";
 import { Annonce } from "../models/Annonce";
+import { Utilisateur } from "../models/Utilisateur";
 
 
 
 
 export class AnnoncesServices{
- annonces:Annonce[]=[
-    {
-      nom:"Vélo",
-      prix:200,
-      description:"lorem upsum",
-      photo:null
-    },
-    {
-      nom:"radio",
-      prix:30,
-      description:"lorem upsum",
-      photo:null
-    }
-  ]
+ annonces:Annonce[]=[]
+ annoncesSubject = new Subject<Annonce[]>();
 
-  
+ constructor(){}
 
+  emitAnnonces(){
+    this.annoncesSubject.next(this.annonces);
+  }
   
 }

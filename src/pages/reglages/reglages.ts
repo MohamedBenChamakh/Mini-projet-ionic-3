@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { UtilisateurService } from '../../services/utilisateur.service';
-import { MonProfilPage } from '../mon-profil/mon-profil';
+import { AuthService } from '../../services/auth.service';
 
 /**
  * Generated class for the ReglagesPage page.
@@ -21,8 +20,9 @@ export class ReglagesPage implements OnInit{
   userForm:FormGroup;
   errorMessage:string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,private formBuilder:FormBuilder,private userService:UtilisateurService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,private formBuilder:FormBuilder,private authService:AuthService) {
   }
+
   ngOnInit(): void {
     this.initForm();
   }
@@ -36,17 +36,22 @@ export class ReglagesPage implements OnInit{
 
   onSubmitSignIn(){
     let user=this.userForm.value;
-    this.userService.SignIn(user['email'],user['passwd']).then(
+    this.authService.SignIn(user['email'],user['passwd']).then(
       (resolve)=>{
        this.navCtrl.parent.select(1); // redirection dans TabsPage vers le profil
       },(reject)=>{
         this.errorMessage="L'adresse email ou le mot de passe sont invalides";
       }
     )
-   
   }
 
+  LogOut(){
+    this.authService.LogOut();
+  }
 
+  Authentificated(){
+    return this.authService.Authentificated();
+  }
 
 
 }

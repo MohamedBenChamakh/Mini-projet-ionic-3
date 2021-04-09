@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Subscription } from 'rxjs/Subscription';
+import { Annonce } from '../../models/Annonce';
 import { Utilisateur } from '../../models/Utilisateur';
-import { UtilisateurService } from '../../services/utilisateur.service';
+import { AnnoncesServices } from '../../services/annonces.service';
+import { AuthService } from '../../services/auth.service';
 
 /**
  * Generated class for the MonProfilPage page.
@@ -18,20 +21,24 @@ import { UtilisateurService } from '../../services/utilisateur.service';
   providers: [Camera]
 })
 export class MonProfilPage {
-  utilisateur:Utilisateur= {
-    id:0,
-    nom:"Ben Chamakh",
-    prenom:"Mohamed",
-    email:"mohamed@gmail.com",
-    passwd:"mohamed123",
-    tel:"12345678"
-};
+  utilisateur:Utilisateur;
+  annonces:Annonce[];
+  annoncesSubscription:Subscription;
   
-  constructor(public navCtrl: NavController, public navParams: NavParams,private camera:Camera,private userService:UtilisateurService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,private camera:Camera,private annonceService:AnnoncesServices,private authService:AuthService) {
+    this.utilisateur=new Utilisateur(+sessionStorage.getItem('id'),sessionStorage.getItem('nom'),sessionStorage.getItem('prenom'),sessionStorage.getItem('email'),sessionStorage.getItem('passwd'),sessionStorage.getItem('tel'));
+    this.annoncesSubscription=this.annonceService.annoncesSubject.subscribe(
+      (annonces:Annonce[])=>{
+        this.annonces=annonces.filter(element=> element.utilisateur==this.utilisateur );;
+      }
+    );
   }
 
-  ionViewDidLoad() {
- //   this.utilisateur=this.userService.utilisateur;
+  ionViewDidLoad(){
+  }
+
+  ionViewCanEnter() {
+    return this.authService.Authentificated();
   }
 
 
