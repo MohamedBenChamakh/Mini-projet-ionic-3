@@ -3,8 +3,8 @@ import { Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
+import { AjoutAnnoncePage } from '../pages/ajout-annonce/ajout-annonce';
 @Component({
   templateUrl: 'app.html'
 })

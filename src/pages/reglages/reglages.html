@@ -21,6 +21,8 @@
             <ion-icon color="primary"  item-start ios="ios-lock" md="md-lock"></ion-icon>
             <ion-input type="password" formControlName="passwd"  placeholder="Mot de passe"></ion-input>
           </ion-item>
+          
+        <div hidden></div>
        </ion-list>
      
       <button ion-button full  color="primary" [disabled]="userForm.invalid" (click)=" onSubmitSignIn()" color="primary">Se connecter</button>

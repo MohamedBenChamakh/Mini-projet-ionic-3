@@ -26,4 +26,8 @@ export class AnnoncePage implements OnInit{
     console.log('ionViewDidLoad AnnoncePage');
   }
 
+  close(){
+    this.navCtrl.pop();
+  }
+
 }

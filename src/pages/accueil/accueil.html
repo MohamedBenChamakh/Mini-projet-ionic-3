@@ -9,13 +9,22 @@
 <ion-content  >
   <ion-searchbar placeholder="Recherche..."  (ionInput)="getItems($event)" ></ion-searchbar>
   <ion-list>
-    <ion-card ion-item *ngFor="let annonce of annonces" (click)="onLoadAd(annonce)">
-      <img [src]="annonce.photo" *ngIf="annonce.photo!=null" />
-      <ion-card-content>
-        <ion-card-title> {{annonce.nom}}</ion-card-title>
-        <p>{{annonce.description}}</p>
-        <p>{{annonce.prix}}DT</p>
-      </ion-card-content>
-    </ion-card >
+    <ion-item *ngFor="let annonce of annonces" (click)="onLoadAd(annonce)">
+    <ion-card>
+        <ion-item >
+          <ion-avatar item-start>
+            <img src="../../assets/imgs/image.png">
+          </ion-avatar>
+          <h2>{{ annonce.utilisateur.prenom }} {{ annonce.utilisateur.nom }}</h2>
+        </ion-item>
+        <img [src]="annonce.photo" *ngIf="annonce.photo!=null" />
+        <ion-card-content>
+          <ion-card-title text-capitalize> {{annonce.nom}}</ion-card-title>
+          <p text-capitalize>{{annonce.description}}</p>
+          <p>{{annonce.prix}}DT</p> 
+        </ion-card-content>
+      </ion-card >
+    </ion-item>
+    
   </ion-list>
 </ion-content>

@@ -4,21 +4,31 @@
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
-<ion-header>
-  <ion-navbar color="primary">
-    <ion-title>{{annonce.nom}}</ion-title>
-  </ion-navbar>
-</ion-header>
 
-<ion-content padding>
+
+<ion-content >
+  
   <ion-card>
-    <ion-card-header>{{annonce.nom}}</ion-card-header>
-    
+    <ion-item >
+      <ion-avatar item-start>
+        <img src="../../assets/imgs/image.png">
+      </ion-avatar>
+      <h2>{{ annonce.utilisateur.prenom }} {{ annonce.utilisateur.nom }}</h2>
+      <p>Contact : {{ annonce.utilisateur.tel }}</p>
+      <ion-fab right top>
+        <button ion-button clear color="danger" (click)="close()">
+          <ion-icon name="md-close"></ion-icon>
+       </button>
+      </ion-fab>
+   
+   
+    </ion-item>
+    <img [src]="annonce.photo" *ngIf="annonce.photo!=null" />
     <ion-card-content>
-      <ion-card-title>Description</ion-card-title>
-      {{annonce.description}}
-      {{annonce.prix}}DT
+      <ion-card-title text-capitalize> {{annonce.nom}}</ion-card-title>
+      <p text-capitalize>{{annonce.description}}</p>
+      <p>{{annonce.prix}}DT</p> 
     </ion-card-content>
-  </ion-card>
+  </ion-card >
 
 </ion-content>

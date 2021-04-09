@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Camera, CameraOptions } from '@ionic-native/camera';
-import { AlertController, IonicPage, LoadingController, ModalController, NavController, NavParams } from 'ionic-angular';
+import { AlertController, IonicPage, LoadingController, NavController, NavParams } from 'ionic-angular';
 import { Subscription } from 'rxjs/Subscription';
 import { Annonce } from '../../models/Annonce';
 import { Utilisateur } from '../../models/Utilisateur';
@@ -21,18 +21,18 @@ import { AjoutAnnoncePage } from '../ajout-annonce/ajout-annonce';
   templateUrl: 'mon-profil.html',
   providers: [Camera]
 })
-export class MonProfilPage {
+export class MonProfilPage implements OnInit{
   utilisateur:Utilisateur;
   annonces:Annonce[];
   annoncesSubscription:Subscription;
-  
+
+
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
     private loadingCtrl:LoadingController,
     private camera:Camera,
     private annonceService:AnnoncesServices,
     private authService:AuthService,
-    private modalCtrl: ModalController,
     private alertCtrl: AlertController) {
 
     const loader = this.loadingCtrl.create({
@@ -40,12 +40,18 @@ export class MonProfilPage {
       duration: 150
     });
     loader.present();
+ }
+
+  ngOnInit():void{
     this.utilisateur=new Utilisateur(+sessionStorage.getItem('id'),sessionStorage.getItem('nom'),sessionStorage.getItem('prenom'),sessionStorage.getItem('email'),sessionStorage.getItem('passwd'),sessionStorage.getItem('tel'));
+ 
     this.annoncesSubscription=this.annonceService.annoncesSubject.subscribe(
       (annonces:Annonce[])=>{
-        this.annonces=annonces.filter(element=> element.utilisateur==this.utilisateur );;
+        this.annonces=annonces.filter(element=> element.utilisateur.id==this.utilisateur.id ).slice();
       }
     );
+      this.annonceService.emitAnnonces();
+      console.log(this.annonces);
   }
 
   ionViewDidLoad(){
@@ -55,6 +61,9 @@ export class MonProfilPage {
     return this.authService.Authentificated();
   }
 
+  mesAnnonces(){
+    
+  }
 
   openCamera(){
     const options: CameraOptions = {
@@ -65,15 +74,7 @@ export class MonProfilPage {
     }
     
     this.camera.getPicture(options).then((imageData) => {  
-      
-      const modal = this.modalCtrl.create({
-      component:AjoutAnnoncePage,
-      componentProps:{
-        image: imageData
-      }
-      }
-      );
-      modal.present();
+      this.navCtrl.push(AjoutAnnoncePage,{image:imageData});
     // this.base64Image = 'data:image/jpeg;base64,' + imageData;
     }, (err) => {
       const alert = this.alertCtrl.create({
@@ -95,11 +96,8 @@ export class MonProfilPage {
     }
     
     this.camera.getPicture(options).then((imageData) => {
-      const modal = this.modalCtrl.create({
-        component:AjoutAnnoncePage
-        }
-        );
-      modal.present();
+    
+      this.navCtrl.push(AjoutAnnoncePage,{image:imageData});
 
     // this.base64Image = 'data:image/jpeg;base64,' + imageData;
     }, (err) => {
