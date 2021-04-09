@@ -4,30 +4,29 @@
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
-<ion-header>
-  <ion-navbar>
-    <ion-title>Réglages</ion-title>
-  </ion-navbar>
-</ion-header>
 
-<ion-content padding>
-
-      <form [formGroup]="userForm" *ngIf="!Authentificated()">
-        <ion-list>
-          <ion-item-divider>Connexion</ion-item-divider>
-          <ion-item>
-            <ion-label floating>Email</ion-label>
-            <ion-input type="text" color="secondary" formControlName="email" ></ion-input>
+<ion-content  >
+  <ion-card  *ngIf="!Authentificated()" >
+    <ion-card-header color="primary">
+     Connexion
+    </ion-card-header>
+    <ion-card-content>
+      <form [formGroup]="userForm">
+        <ion-list  no-lines>
+          <ion-item >
+            <ion-icon color="primary" item-start ios="ios-person" md="md-person"></ion-icon>
+            <ion-input type="text"  formControlName="email" placeholder="Login" ></ion-input>
           </ion-item>
-        
-          <ion-item>
-            <ion-label floating>Mot de passe</ion-label>
-            <ion-input type="password" [clearOnEdit]="true" formControlName="passwd"></ion-input>
+          <ion-item  >
+            <ion-icon color="primary"  item-start ios="ios-lock" md="md-lock"></ion-icon>
+            <ion-input type="password" formControlName="passwd"  placeholder="Mot de passe"></ion-input>
           </ion-item>
-        </ion-list>
-        <p color="danger">{{errorMessage}}</p>
-        <button ion-button float-right block margin-top color="dark" [disabled]="userForm.invalid" (click)=" onSubmitSignIn()">Se connecter</button>
-    </form>
-
+       </ion-list>
+     
+      <button ion-button full  color="primary" [disabled]="userForm.invalid" (click)=" onSubmitSignIn()" color="primary">Se connecter</button>
+    
+      </form>
+    </ion-card-content>
+    </ion-card>
     <button ion-button full *ngIf="Authentificated()" (click)="LogOut()">Se deconnecter</button>
 </ion-content>

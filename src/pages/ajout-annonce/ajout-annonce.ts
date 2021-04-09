@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 /**
@@ -14,6 +14,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'ajout-annonce.html',
 })
 export class AjoutAnnoncePage {
+
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }

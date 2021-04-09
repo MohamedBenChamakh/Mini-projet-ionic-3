@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { IonicPage, LoadingController, NavController, NavParams } from 'ionic-angular';
+import { AlertController, IonicPage, LoadingController, NavController, NavParams } from 'ionic-angular';
 import { AuthService } from '../../services/auth.service';
-
 /**
  * Generated class for the ReglagesPage page.
  *
@@ -16,11 +15,16 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: 'reglages.html',
 })
 export class ReglagesPage implements OnInit{
-
+  darkMode=false;
   userForm:FormGroup;
-  errorMessage:string;
+  errorMessage:string=null;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,private loadingCtrl:LoadingController,private formBuilder:FormBuilder,private authService:AuthService) {
+  constructor(public navCtrl: NavController,
+     public navParams: NavParams,
+     private loadingCtrl:LoadingController,
+     private formBuilder:FormBuilder,
+     private authService:AuthService,
+     private alertCtrl:AlertController) {
     const loader = this.loadingCtrl.create({
       content: "chargement...",
       duration: 150
@@ -45,8 +49,15 @@ export class ReglagesPage implements OnInit{
       (resolve)=>{
        this.navCtrl.parent.select(1); // redirection dans TabsPage vers le profil
       },(reject)=>{
-        this.errorMessage="L'adresse email ou le mot de passe sont invalides";
+        
+        const alert = this.alertCtrl.create({
+          title: 'Erreur',
+          subTitle: 'L\'adresse email ou le mot de passe sont invalides',
+          buttons: ['D\'accord']
+        });
+        alert.present();
       }
+      
     )
   }
 
@@ -57,6 +68,7 @@ export class ReglagesPage implements OnInit{
   Authentificated(){
     return this.authService.Authentificated();
   }
+
 
 
 }

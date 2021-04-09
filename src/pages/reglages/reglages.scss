@@ -1,3 +1,10 @@
+@import '../../theme/variables.scss';
+
 page-reglages {
-  
+    ion-card-header{
+        font-weight:bold;
+    }
+    ion-label{
+        border:1px solid #318CE7;
+    }
 }

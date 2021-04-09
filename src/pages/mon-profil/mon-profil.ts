@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { Camera, CameraOptions } from '@ionic-native/camera';
-import { IonicPage, LoadingController, NavController, NavParams } from 'ionic-angular';
+import { AlertController, IonicPage, LoadingController, ModalController, NavController, NavParams } from 'ionic-angular';
 import { Subscription } from 'rxjs/Subscription';
 import { Annonce } from '../../models/Annonce';
 import { Utilisateur } from '../../models/Utilisateur';
 import { AnnoncesServices } from '../../services/annonces.service';
 import { AuthService } from '../../services/auth.service';
+import { AjoutAnnoncePage } from '../ajout-annonce/ajout-annonce';
 
 /**
  * Generated class for the MonProfilPage page.
@@ -25,7 +26,15 @@ export class MonProfilPage {
   annonces:Annonce[];
   annoncesSubscription:Subscription;
   
-  constructor(public navCtrl: NavController, public navParams: NavParams,private loadingCtrl:LoadingController,private camera:Camera,private annonceService:AnnoncesServices,private authService:AuthService) {
+  constructor(public navCtrl: NavController, 
+    public navParams: NavParams,
+    private loadingCtrl:LoadingController,
+    private camera:Camera,
+    private annonceService:AnnoncesServices,
+    private authService:AuthService,
+    private modalCtrl: ModalController,
+    private alertCtrl: AlertController) {
+
     const loader = this.loadingCtrl.create({
       content: "chargement...",
       duration: 150
@@ -55,12 +64,24 @@ export class MonProfilPage {
       mediaType: this.camera.MediaType.PICTURE
     }
     
-    this.camera.getPicture(options).then((imageData) => {
-     // imageData is either a base64 encoded string or a file URI
-     // If it's base64 (DATA_URL):
+    this.camera.getPicture(options).then((imageData) => {  
+      
+      const modal = this.modalCtrl.create({
+      component:AjoutAnnoncePage,
+      componentProps:{
+        image: imageData
+      }
+      }
+      );
+      modal.present();
     // this.base64Image = 'data:image/jpeg;base64,' + imageData;
     }, (err) => {
-     // Handle error
+      const alert = this.alertCtrl.create({
+        title: 'Erreur',
+        subTitle: 'Une erreur est survenue lors de l\'importation de l\'image',
+        buttons: ['D\'accord']
+      });
+      alert.present();
     });
   }
 
@@ -74,11 +95,20 @@ export class MonProfilPage {
     }
     
     this.camera.getPicture(options).then((imageData) => {
-     // imageData is either a base64 encoded string or a file URI
-     // If it's base64 (DATA_URL):
+      const modal = this.modalCtrl.create({
+        component:AjoutAnnoncePage
+        }
+        );
+      modal.present();
+
     // this.base64Image = 'data:image/jpeg;base64,' + imageData;
     }, (err) => {
-     // Handle error
+      const alert = this.alertCtrl.create({
+        title: 'Erreur',
+        subTitle: 'Une erreur est survenue lors de l\'importation de l\'image',
+        buttons: ['D\'accord']
+      });
+      alert.present();
     });
   }
 
