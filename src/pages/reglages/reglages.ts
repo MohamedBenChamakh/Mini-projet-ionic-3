@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AlertController, IonicPage, LoadingController, NavController, NavParams } from 'ionic-angular';
+import { AlertController, IonicPage, NavController, NavParams } from 'ionic-angular';
+import { AnnoncesServices } from '../../services/annonces.service';
 import { AuthService } from '../../services/auth.service';
 /**
  * Generated class for the ReglagesPage page.
@@ -15,22 +16,15 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: 'reglages.html',
 })
 export class ReglagesPage implements OnInit{
-  darkMode=false;
   userForm:FormGroup;
   errorMessage:string=null;
 
   constructor(public navCtrl: NavController,
      public navParams: NavParams,
-     private loadingCtrl:LoadingController,
      private formBuilder:FormBuilder,
      private authService:AuthService,
-     private alertCtrl:AlertController) {
-    const loader = this.loadingCtrl.create({
-      content: "chargement...",
-      duration: 150
-    });
-    loader.present();
-  }
+     private annoncesService:AnnoncesServices,
+     private alertCtrl:AlertController) {}
 
   ngOnInit(): void {
     this.initForm();
@@ -44,10 +38,12 @@ export class ReglagesPage implements OnInit{
   }
 
   onSubmitSignIn(){
+
     let user=this.userForm.value;
     this.authService.SignIn(user['email'],user['passwd']).then(
-      (resolve)=>{
-       this.navCtrl.parent.select(1); // redirection dans TabsPage vers le profil
+      (resolve:number)=>{
+       this.annoncesService.loadMesAnnonces(resolve);
+       this.navCtrl.parent.select(1)  ; // redirection dans TabsPage vers le profil
       },(reject)=>{
         
         const alert = this.alertCtrl.create({
@@ -63,6 +59,7 @@ export class ReglagesPage implements OnInit{
 
   LogOut(){
     this.authService.LogOut();
+    this.annoncesService.supprimerMesAnnonces();
   }
 
   Authentificated(){

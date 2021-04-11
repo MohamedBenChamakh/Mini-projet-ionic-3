@@ -1,8 +1,11 @@
+import { Subject } from "rxjs";
 import { Utilisateur } from "../models/Utilisateur";
 
 export class AuthService{
     isAuth=false;
     utilisateur:Utilisateur;
+    utilisateurSubject=new Subject<Utilisateur>();
+
     utilisateurs:Utilisateur[]=[
         {
             id:0,
@@ -24,33 +27,42 @@ export class AuthService{
     
     constructor(){}
 
-
     SignIn(email:string,passwd:string){
         return new Promise(
             (resolve,reject)=>{
+                       console.log("signIn");
                        this.utilisateur=this.utilisateurs.find(function(element){
                         return (element.email==email && element.passwd==passwd)
                        } );
-
                        if(this.utilisateur!=null) {
-                           for(let key in this.utilisateur)
-                               sessionStorage.setItem(key,this.utilisateur[key]);
                            this.isAuth=true;
-                           resolve(this.isAuth);
+                           this.emitUser();
+                           resolve(this.utilisateur.id);
                        }
-                       else
-                       reject(this.isAuth);
+                       else{
+                        this.utilisateur=null;
+                        reject(this.isAuth);
+                       }
+                      
                   })
-
             
      }
 
+     loadUserContent(){
+         this.emitUser();
+     }
+
      LogOut(){
+         this.utilisateur=null;
          this.isAuth=false;
-         sessionStorage.clear();
+         this.emitUser();
      }
 
      Authentificated(){
          return this.isAuth;
+     }
+
+     emitUser(){
+         this.utilisateurSubject.next(this.utilisateur);
      }
 }

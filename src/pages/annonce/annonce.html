@@ -16,12 +16,12 @@
       <h2>{{ annonce.utilisateur.prenom }} {{ annonce.utilisateur.nom }}</h2>
       <p>Contact : {{ annonce.utilisateur.tel }}</p>
       <ion-fab right top>
-        <button ion-button clear color="danger" (click)="close()">
+        <button ion-button clear  (click)="close()">
           <ion-icon name="md-close"></ion-icon>
        </button>
       </ion-fab>
    
-   
+
     </ion-item>
     <img [src]="annonce.photo" *ngIf="annonce.photo!=null" />
     <ion-card-content>
@@ -29,6 +29,18 @@
       <p text-capitalize>{{annonce.description}}</p>
       <p>{{annonce.prix}}DT</p> 
     </ion-card-content>
+    <ion-row *ngIf="utilisateur!=null && annonce.utilisateur.id==utilisateur.id">
+      <ion-col align-self-start text-start>
+        <button ion-button clear color="secondary">
+          <ion-icon  ios="ios-create" md="md-create" margin-right></ion-icon> Editer
+        </button>
+      </ion-col>
+      <ion-col align-self-end text-end>
+        <button ion-button clear color="danger" (click)="supprimer()">
+          <ion-icon ios="ios-trash" md="md-trash" margin-right></ion-icon> Supprimer
+        </button>
+      </ion-col>
+    </ion-row>
   </ion-card >
 
 </ion-content>

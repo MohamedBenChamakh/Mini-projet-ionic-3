@@ -7,6 +7,7 @@ import { Utilisateur } from '../../models/Utilisateur';
 import { AnnoncesServices } from '../../services/annonces.service';
 import { AuthService } from '../../services/auth.service';
 import { AjoutAnnoncePage } from '../ajout-annonce/ajout-annonce';
+import { AnnoncePage } from '../annonce/annonce';
 
 /**
  * Generated class for the MonProfilPage page.
@@ -22,49 +23,43 @@ import { AjoutAnnoncePage } from '../ajout-annonce/ajout-annonce';
   providers: [Camera]
 })
 export class MonProfilPage implements OnInit{
+
   utilisateur:Utilisateur;
+  utilisateurSubscription:Subscription;
+
   annonces:Annonce[];
   annoncesSubscription:Subscription;
 
 
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
-    private loadingCtrl:LoadingController,
     private camera:Camera,
     private annonceService:AnnoncesServices,
     private authService:AuthService,
-    private alertCtrl: AlertController) {
-
-    const loader = this.loadingCtrl.create({
-      content: "chargement...",
-      duration: 150
-    });
-    loader.present();
- }
+    private alertCtrl: AlertController) {}
 
   ngOnInit():void{
-    this.utilisateur=new Utilisateur(+sessionStorage.getItem('id'),sessionStorage.getItem('nom'),sessionStorage.getItem('prenom'),sessionStorage.getItem('email'),sessionStorage.getItem('passwd'),sessionStorage.getItem('tel'));
- 
-    this.annoncesSubscription=this.annonceService.annoncesSubject.subscribe(
-      (annonces:Annonce[])=>{
-        this.annonces=annonces.filter(element=> element.utilisateur.id==this.utilisateur.id ).slice();
-      }
-    );
-      this.annonceService.emitAnnonces();
-      console.log(this.annonces);
-  }
 
-  ionViewDidLoad(){
+    this.utilisateurSubscription=this.authService.utilisateurSubject.subscribe(
+      (utilisateur: Utilisateur)=>{
+        this.utilisateur=utilisateur;
+      }
+    )
+    this.authService.loadUserContent();
+    
+    this.annoncesSubscription=this.annonceService.mesAnnoncesSubject.subscribe(
+          (annonces:Annonce[])=>{
+            this.annonces=annonces;
+          }
+    );
+    
+    this.annonceService.loadMesAnnonces(this.utilisateur.id);
+  
   }
 
   ionViewCanEnter() {
     return this.authService.Authentificated();
   }
-
-  mesAnnonces(){
-    
-  }
-
   openCamera(){
     const options: CameraOptions = {
       quality: 100,
@@ -75,7 +70,6 @@ export class MonProfilPage implements OnInit{
     
     this.camera.getPicture(options).then((imageData) => {  
       this.navCtrl.push(AjoutAnnoncePage,{image:imageData});
-    // this.base64Image = 'data:image/jpeg;base64,' + imageData;
     }, (err) => {
       const alert = this.alertCtrl.create({
         title: 'Erreur',
@@ -99,7 +93,6 @@ export class MonProfilPage implements OnInit{
     
       this.navCtrl.push(AjoutAnnoncePage,{image:imageData});
 
-    // this.base64Image = 'data:image/jpeg;base64,' + imageData;
     }, (err) => {
       const alert = this.alertCtrl.create({
         title: 'Erreur',
@@ -109,6 +102,14 @@ export class MonProfilPage implements OnInit{
       alert.present();
     });
   }
+  
+  onLoadAd(annonce:{nom:string,prix:number,description:string}){
+    this.navCtrl.push(AnnoncePage,{annonce:annonce});
+  }
 
+  ngOnDestroy() {
+    this.utilisateurSubscription.unsubscribe();
+    this.annoncesSubscription.unsubscribe();
+  }
 
 }

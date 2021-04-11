@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, LoadingController, NavController, NavParams } from 'ionic-angular';
+import { Subscription } from 'rxjs';
 import { Annonce } from '../../models/Annonce';
 import { AnnoncesServices } from '../../services/annonces.service';
 import { AnnoncePage } from '../annonce/annonce';
@@ -19,17 +20,21 @@ import { AnnoncePage } from '../annonce/annonce';
 export class AccueilPage {
 
   annonces : Annonce[];
-
-  constructor(public navCtrl: NavController, public navParams: NavParams,private loadingCtrl:LoadingController ,private annonceService:AnnoncesServices) {
-    const loader = this.loadingCtrl.create({
-      content: "chargement...",
-      duration: 150
-    });
-    loader.present();
-  }
+  annoncesSubscription : Subscription;
+  constructor(
+     public navCtrl: NavController,
+     public navParams: NavParams,
+     private loadingCtrl:LoadingController,
+     private annonceService:AnnoncesServices) {}
 
   ionViewWillEnter(){
-    this.annonces=this.annonceService.annonces.slice();
+    this.annoncesSubscription=this.annonceService.annoncesSubject.subscribe(
+      (annonces:Annonce[])=>{
+        this.annonces=annonces.slice();
+      }
+    );
+    this.annonceService.emitAnnonces();
+
   }
 
   onLoadAd(annonce:{nom:string,prix:number,description:string}){

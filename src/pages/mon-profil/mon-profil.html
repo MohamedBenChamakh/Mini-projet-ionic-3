@@ -37,7 +37,7 @@
       </ion-thumbnail>
       <h2 text-capitalize>{{ annonce.nom }}</h2>
       <p  text-capitalize>{{ annonce.description }}</p>
-      <button ion-button clear item-end>Détails</button>
+      <button ion-button clear item-end (click)="onLoadAd(annonce)">Détails</button>
 
     </ion-item>
   </ion-list>
