@@ -1,3 +1,4 @@
+import { DatabaseService } from './../services/database.service';
 
 import { Camera } from '@ionic-native/camera';
 import { BrowserModule } from '@angular/platform-browser';
@@ -42,6 +43,7 @@ import { AjoutAnnoncePage } from '../pages/ajout-annonce/ajout-annonce';
   ],
   providers: [
     AnnoncesServices,
+    DatabaseService,
     AuthService,
     StatusBar,
     SplashScreen,
