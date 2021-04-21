@@ -40,9 +40,16 @@ export class AjoutAnnoncePage implements OnInit {
         this.utilisateur=utilisateur;
       }
     )
-   this.authService.loadUserContent();
-   this.image='data:image/jpeg;base64,' + this.navParams.get("image");
-    this.initForm();
+   this.authService.emitUser();
+
+  
+   this.initForm();
+  }
+
+
+  ionViewDidEnter(){
+    this.image='data:image/jpeg;base64,' + this.navParams.get("image");
+
   }
 
   ionViewDidLoad() {}

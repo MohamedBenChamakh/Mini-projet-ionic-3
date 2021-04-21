@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, LoadingController, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Subscription } from 'rxjs';
 import { Annonce } from '../../models/Annonce';
 import { AnnoncesServices } from '../../services/annonces.service';
@@ -24,7 +24,6 @@ export class AccueilPage {
   constructor(
      public navCtrl: NavController,
      public navParams: NavParams,
-     private loadingCtrl:LoadingController,
      private annonceService:AnnoncesServices) {}
 
   ionViewWillEnter(){

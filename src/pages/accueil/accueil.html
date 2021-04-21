@@ -7,15 +7,15 @@
 
 
 <ion-content  >
-  <ion-searchbar placeholder="Recherche..."  (ionInput)="getItems($event)" ></ion-searchbar>
-  <ion-list>
+  <ion-searchbar placeholder="Recherche..."  (ionInput)="getItems($event)" color="primary" no-padding></ion-searchbar>
+  <ion-list >
     <ion-item *ngFor="let annonce of annonces" (click)="onLoadAd(annonce)">
-    <ion-card>
+    <ion-card >
         <ion-item >
           <ion-avatar item-start>
             <img src="../../assets/imgs/image.png">
           </ion-avatar>
-          <h2>{{ annonce.utilisateur.prenom }} {{ annonce.utilisateur.nom }}</h2>
+          <h3>{{ annonce.utilisateur.prenom }} {{ annonce.utilisateur.nom }}</h3>
         </ion-item>
         <img [src]="annonce.photo" *ngIf="annonce.photo!=null" />
         <ion-card-content>

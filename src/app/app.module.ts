@@ -1,3 +1,5 @@
+
+import { Camera } from '@ionic-native/camera';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
@@ -5,7 +7,6 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 
 import { MyApp } from './app.component';
-import { HomePage } from '../pages/home/home';
 import { ReglagesPage } from '../pages/reglages/reglages';
 import { MonProfilPage } from '../pages/mon-profil/mon-profil';
 import { AccueilPage } from '../pages/accueil/accueil';
@@ -18,7 +19,6 @@ import { AjoutAnnoncePage } from '../pages/ajout-annonce/ajout-annonce';
 @NgModule({
   declarations: [
     MyApp,
-    HomePage,
     ReglagesPage,
     MonProfilPage,
     AccueilPage,
@@ -33,7 +33,6 @@ import { AjoutAnnoncePage } from '../pages/ajout-annonce/ajout-annonce';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage,
     ReglagesPage,
     MonProfilPage,
     AccueilPage,
@@ -46,6 +45,8 @@ import { AjoutAnnoncePage } from '../pages/ajout-annonce/ajout-annonce';
     AuthService,
     StatusBar,
     SplashScreen,
+    Camera,
+
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

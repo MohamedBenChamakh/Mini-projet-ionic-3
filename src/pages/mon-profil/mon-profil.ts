@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Camera, CameraOptions } from '@ionic-native/camera';
-import { AlertController, IonicPage, LoadingController, NavController, NavParams } from 'ionic-angular';
+import {  IonicPage, NavController, NavParams, ModalController, ToastController  } from 'ionic-angular';
+
 import { Subscription } from 'rxjs/Subscription';
 import { Annonce } from '../../models/Annonce';
 import { Utilisateur } from '../../models/Utilisateur';
@@ -19,8 +20,7 @@ import { AnnoncePage } from '../annonce/annonce';
 @IonicPage()
 @Component({
   selector: 'page-mon-profil',
-  templateUrl: 'mon-profil.html',
-  providers: [Camera]
+  templateUrl: 'mon-profil.html'
 })
 export class MonProfilPage implements OnInit{
 
@@ -31,12 +31,14 @@ export class MonProfilPage implements OnInit{
   annoncesSubscription:Subscription;
 
 
+
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
     private camera:Camera,
     private annonceService:AnnoncesServices,
     private authService:AuthService,
-    private alertCtrl: AlertController) {}
+    private toastCtrl:ToastController,
+    private modalCtrl:ModalController) {}
 
   ngOnInit():void{
 
@@ -60,50 +62,68 @@ export class MonProfilPage implements OnInit{
   ionViewCanEnter() {
     return this.authService.Authentificated();
   }
+
+
   openCamera(){
     const options: CameraOptions = {
       quality: 100,
       destinationType: this.camera.DestinationType.DATA_URL,
       encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE
+      mediaType: this.camera.MediaType.PICTURE,
+      correctOrientation: true
     }
     
     this.camera.getPicture(options).then((imageData) => {  
-      this.navCtrl.push(AjoutAnnoncePage,{image:imageData});
-    }, (err) => {
-      const alert = this.alertCtrl.create({
-        title: 'Erreur',
-        subTitle: 'Une erreur est survenue lors de l\'importation de l\'image',
-        buttons: ['D\'accord']
-      });
-      alert.present();
+
+      if(imageData){
+        this.modalCtrl.create(AjoutAnnoncePage,{image: imageData}).present();
+      }
+    this.camera.cleanup();
+    }).catch((error) => {
+
+      this.toastCtrl.create({
+        message: error.message,
+        duration:3000,
+        position:'bottom'
+      }).present();
+
+      this.camera.cleanup();
     });
   }
 
-  openGallery(){
+  openGallery(){ 
     const options: CameraOptions = {
       quality: 100,
       destinationType: this.camera.DestinationType.DATA_URL,
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE,
-      sourceType:this.camera.PictureSourceType.PHOTOLIBRARY
+      sourceType:this.camera.PictureSourceType.PHOTOLIBRARY,
+      correctOrientation: true
     }
     
     this.camera.getPicture(options).then((imageData) => {
     
-      this.navCtrl.push(AjoutAnnoncePage,{image:imageData});
+      if(imageData){
+       this.modalCtrl.create(AjoutAnnoncePage,{image: imageData}).present();
+        
+      }
 
-    }, (err) => {
-      const alert = this.alertCtrl.create({
-        title: 'Erreur',
-        subTitle: 'Une erreur est survenue lors de l\'importation de l\'image',
-        buttons: ['D\'accord']
-      });
-      alert.present();
+     this.camera.cleanup();
+    }).catch(
+      (error) => {
+  
+      this.toastCtrl.create({
+        message: error.message,
+        duration:3000,
+        position:'bottom'
+      }).present();
+      
+
+     this.camera.cleanup();
     });
   }
   
-  onLoadAd(annonce:{nom:string,prix:number,description:string}){
+  onLoadAd(annonce:Annonce){ 
     this.navCtrl.push(AnnoncePage,{annonce:annonce});
   }
 
