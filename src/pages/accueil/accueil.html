@@ -1,15 +1,24 @@
-<!--
-  Generated template for the AccueilPage page.
 
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 
+
+<ion-header  no-border padding>
+  <ion-toolbar>
+    <ion-searchbar placeholder="Recherche..."  (ionInput)="getItems($event)" no-padding  ></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
 
 <ion-content  >
-  <ion-searchbar placeholder="Recherche..."  (ionInput)="getItems($event)" color="primary" no-padding></ion-searchbar>
-  <ion-list >
-    <ion-item *ngFor="let annonce of annonces" (click)="onLoadAd(annonce)">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)"  >
+    <ion-refresher-content pullingText="Actualiser"></ion-refresher-content>
+  </ion-refresher>
+  <ion-grid style="height: 100%" *ngIf="annonces==null || annonces.length==0">
+    <ion-row justify-content-center align-items-center text-center  style="height: 100%">
+    <h2 >Il n'y a aucune annonce à afficher <br> pour le moment <br> <ion-icon md="ios-basket-outline"  ></ion-icon></h2>
+    </ion-row>
+  </ion-grid>
+
+  <ion-list  *ngIf="annonces!=null && annonces.length>0" >
+    <ion-item *ngFor="let annonce of infiniteAnnonces" (click)="onLoadAd(annonce)">
     <ion-card >
         <ion-item >
           <ion-avatar item-start>
@@ -27,4 +36,10 @@
     </ion-item>
     
   </ion-list>
+
+
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
 </ion-content>

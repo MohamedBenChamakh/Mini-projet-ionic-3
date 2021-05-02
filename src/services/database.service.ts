@@ -1,15 +1,34 @@
 
 import { Injectable } from '@angular/core';
-import { SQLite ,SQLiteObject } from '@ionic-native/sqlite';
-
+import {  SQLiteObject } from '@ionic-native/sqlite';
+import { LoadingController, Platform, ToastController } from 'ionic-angular';
+import { SQLite } from '@ionic-native/sqlite';
+import { Utilisateur } from '../models/Utilisateur';
+import { Annonce } from '../models/Annonce';
 
 @Injectable()
 export class DatabaseService{
 
-    private db:SQLiteObject;
+    public db:SQLiteObject;
+    public annonces:Annonce[];
+    
+    constructor(
+        private sqlite:SQLite,
+        private loadingCtrl:LoadingController,
+        private toastCtrl:ToastController,
+        private platform:Platform){
+            let loader= this.loadingCtrl.create({
+                content: 'Chargement...'
+              });
 
-    constructor(private sqlite:SQLite){
-        this.createDatabase();
+            loader.present();
+            this.platform.ready().then(()=>{
+            
+                this.createDatabase();
+                loader.dismiss();
+            
+            });
+     
     }
 
     createDatabase() {
@@ -18,28 +37,91 @@ export class DatabaseService{
             location:'default'
         })
         .then((db:SQLiteObject)=>{
-            console.log('Base de données créée ');
+            
             this.db=db;
             this.createTables();
+            this.insertClients();
+  
+            
+         
         })
+        .catch((error)=>
+        {
+            let toast= this.toastCtrl.create({
+                message:error.message,
+                duration:3000,
+                position:'top'
+                     });
+                toast.present();
+        }        
+        )
+     
+    }
+  
+    createTables() {
+        
+        this.db.executeSql('create table IF NOT EXISTS ANNONCE  (ID_ANNONCE int not null,ID  int not null, NOM_ANNONCE   char(50) not null, PRIX  decimal not null,DESCRIPTION char(100),PHOTO long blob not null,primary key (ID_ANNONCE))' ,{})
+        .then(()=>{
+            this.db.executeSql('create table  IF NOT EXISTS UTILISATEUR (ID int not null,NOM char(50) not null,PRENOM char(50) not null,EMAIL char(50) not null,PASSWD char(50) not null,TEL char(50) not null,primary key (ID));',{})
+            .then(()=>{
+                this.db.executeSql('alter table  ANNONCE add constraint FK_POSTER foreign key (ID) references UTILISATEUR (ID) on delete restrict on update restrict',{})
+                .then(()=>{
+                    let toast= this.toastCtrl.create({
+                        message:'Base de données générée !',
+                        duration:3000,
+                        position:'top'
+                    });
+                    toast.present();
+                      
+                    })
+                .catch((error)=>{})
+
+                })
+            .catch((error)=>    {
+                let toast= this.toastCtrl.create({
+                    message:error.message,
+                    duration:3000,
+                    position:'top'
+                         });
+                    toast.present();
+            });
+        })
+        .catch((error)=>    {
+            let toast= this.toastCtrl.create({
+                message:error.message,
+                duration:3000,
+                position:'top'
+                     });
+                toast.present();
+        });
+   
     }
 
-    createTables() {
-        this.db.executeSql('create table IF NOT EXISTS ANNONCE  (ID_ANNONCE int not null,ID  int not null, NOM   char(50) not null, PRIX  decimal not null,DESCRIPTION char(100),PHOTO longblob not null,primary key (ID_ANNONCE))',{})
+    insertClients(){
+        this.db.executeSql('INSERT INTO UTILISATEUR VALUES(1,\''+'Ben Chamakh'+'\',\''+'Mohamed'+'\',\''+'mohamed@gmail.com'+'\',\''+'mohamed123'+'\',\''+'12345678'+'\')',{})
         .then(()=>{
-            console.log('table ANNONCE créée');
-            this.db.executeSql('create table IF NOT EXISTS  UTILISATEUR (ID int not null,NOM char(50) not null,PRENOM char(50) not null,EMAIL char(50) not null,PASSWD char(50) not null,TEL char(50) not null,primary key (ID));',{})
-            .then(()=>{
-                console.log('table UTILISATEUR créée');
-                this.db.executeSql('alter table ANNONCE add constraint FK_POSTER foreign key (ID) references UTILISATEUR (ID) on delete restrict on update restrict',{})
-                .then(()=>{
-                    console.log('relation créée');
-                })
-                .catch(error=> console.log(error));
-            })
-            .catch(error=> console.log(error));
-        })
-        .catch(error=> console.log(error));
-    
+            let toast= this.toastCtrl.create({
+                message:'Utilisateur généré !',
+                duration:3000,
+                position:'top'
+            });
+            toast.present();
+        })     
+        .catch((error)=>  { })
+
+        this.db.executeSql('INSERT INTO UTILISATEUR VALUES(2,\''+'Ben Salah'+'\',\''+'Foulen'+'\',\''+'foulen@gmail.com'+'\',\''+'foulen123456'+'\',\''+'12345678'+'\')',{})
+        .then(()=>{
+            let toast= this.toastCtrl.create({
+                message:'Utilisateur généré !',
+                duration:3000,
+                position:'top'
+            });
+            toast.present();
+        })     
+        .catch((error)=>  { })
     }
+
+
+
+    
 }

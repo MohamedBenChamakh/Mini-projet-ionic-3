@@ -5,13 +5,12 @@
   Ionic pages and navigation.
 -->
 
-
-<ion-content >
-  
+<ion-content *ngIf="annonce!=null" padding margin-bottom>
+  <h2 padding>Annonce</h2>
   <ion-card>
     <ion-item >
       <ion-avatar item-start>
-        <img src="../../assets/imgs/image.png">
+        <img src="../../assets/imgs/image.png" height="20px">
       </ion-avatar>
       <h3>{{ annonce.utilisateur.prenom }} {{ annonce.utilisateur.nom }}</h3>
       <p>Contact : {{ annonce.utilisateur.tel }}</p>
@@ -42,5 +41,4 @@
       </ion-col>
     </ion-row>
   </ion-card >
-
 </ion-content>

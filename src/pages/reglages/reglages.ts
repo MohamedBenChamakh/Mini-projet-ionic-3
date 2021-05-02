@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AlertController, IonicPage, NavController, NavParams } from 'ionic-angular';
+import { AlertController, IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 import { AnnoncesServices } from '../../services/annonces.service';
 import { AuthService } from '../../services/auth.service';
 /**
@@ -15,19 +15,24 @@ import { AuthService } from '../../services/auth.service';
   selector: 'page-reglages',
   templateUrl: 'reglages.html',
 })
-export class ReglagesPage implements OnInit{
+export class ReglagesPage{
   userForm:FormGroup;
   errorMessage:string=null;
-
+  isAuth:boolean;
   constructor(public navCtrl: NavController,
      public navParams: NavParams,
      private formBuilder:FormBuilder,
      private authService:AuthService,
      private annoncesService:AnnoncesServices,
-     private alertCtrl:AlertController) {}
+     private toastCtrl:ToastController,
+     private alertCtrl:AlertController) {
+      this.initForm();
+     }
 
-  ngOnInit(): void {
-    this.initForm();
+
+
+  ionViewWillEnter(){
+    this.isAuth=this.authService.Authentificated();
   }
 
   initForm(){
@@ -41,8 +46,13 @@ export class ReglagesPage implements OnInit{
 
     let user=this.userForm.value;
     this.authService.SignIn(user['email'],user['passwd']).then(
-      (resolve:number)=>{
-       this.annoncesService.loadMesAnnonces(resolve);
+      (prenom:string)=>{
+        let toast= this.toastCtrl.create({
+          message:'Bienvenue '+prenom,
+          duration:2000,
+          position:'top'
+        });
+        toast.present();
        this.navCtrl.parent.select(1)  ; // redirection dans TabsPage vers le profil
       },(reject)=>{
         
@@ -58,13 +68,20 @@ export class ReglagesPage implements OnInit{
   }
 
   LogOut(){
-    this.authService.LogOut();
-    this.annoncesService.supprimerMesAnnonces();
+    this.authService.LogOut().then(
+      ()=>{
+        let toast= this.toastCtrl.create({
+          message:'A la prochaine !',
+          duration:2000,
+          position:'top'
+        });
+        toast.present();
+      }
+    );
+    this.ionViewWillEnter();
   }
 
-  Authentificated(){
-    return this.authService.Authentificated();
-  }
+    
 
 
 

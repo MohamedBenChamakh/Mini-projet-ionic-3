@@ -3,7 +3,7 @@
     <name>Mini projet</name>
     <description>Projet Ionic V3</description>
     <author email="hi@ionicframework.com" href="http://ionicframework.com/">Ionic Framework Team</author>
-    <content src="index.html" />
+    <content original-src="index.html" src="http://192.168.1.2:8100" />
     <access origin="*" />
     <preferance name="android:usesCleartextTraffic" value="true" />
     <allow-intent href="http://*/*" />
@@ -102,4 +102,6 @@
     <plugin name="cordova-plugin-ionic-keyboard" spec="^2.0.5" />
     <allow-navigation href="http://169.254.158.89:8100" />
     <allow-navigation href="http://192.168.1.10:8100" />
+    <allow-navigation href="http://192.168.1.5:8100" />
+    <allow-navigation href="http://192.168.1.2:8100" />
 </widget>

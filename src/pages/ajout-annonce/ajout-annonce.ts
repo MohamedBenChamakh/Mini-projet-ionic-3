@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {AlertController, IonicPage, NavController, NavParams } from 'ionic-angular';
+import { AlertController, IonicPage, NavController, NavParams, normalizeURL, ToastController } from 'ionic-angular';
 import { Subscription } from 'rxjs';
 import { Annonce } from '../../models/Annonce';
 import { Utilisateur } from '../../models/Utilisateur';
@@ -30,6 +30,7 @@ export class AjoutAnnoncePage implements OnInit {
      public navParams: NavParams,
      private formBuilder:FormBuilder,
      private annoncesService:AnnoncesServices,
+     private toastCtrl:ToastController,
      private authService:AuthService,
      private alertCtrl:AlertController) {
   }
@@ -41,15 +42,13 @@ export class AjoutAnnoncePage implements OnInit {
       }
     )
    this.authService.emitUser();
-
-  
    this.initForm();
   }
 
 
   ionViewDidEnter(){
-    this.image='data:image/jpeg;base64,' + this.navParams.get("image");
-
+    this.image=this.navParams.get("image"); // 'data:image/jpeg;base64,' + 
+ 
   }
 
   ionViewDidLoad() {}

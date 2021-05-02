@@ -1,4 +1,19 @@
 page-accueil {
   
-    
+    h2{
+        color:rgb(184, 184, 184);
+    }
+  
+    ion-card{
+        border-radius: 20px !important;
+    }
+    .searchbar-input {
+        border: 0 !important;
+        box-shadow: none !important;
+        background-color: white !important; 
+    }
+    .searchbar,.searchbar-input-container,.searchbar-input{
+        background-color: white !important; 
+        border:none !important
+    }
 }

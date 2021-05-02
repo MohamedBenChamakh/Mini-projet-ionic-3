@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Camera, CameraOptions } from '@ionic-native/camera';
+import { normalizeURL } from 'ionic-angular';
 import {  IonicPage, NavController, NavParams, ModalController, ToastController  } from 'ionic-angular';
 
 import { Subscription } from 'rxjs/Subscription';
@@ -22,7 +23,7 @@ import { AnnoncePage } from '../annonce/annonce';
   selector: 'page-mon-profil',
   templateUrl: 'mon-profil.html'
 })
-export class MonProfilPage implements OnInit{
+export class MonProfilPage {
 
   utilisateur:Utilisateur;
   utilisateurSubscription:Subscription;
@@ -30,44 +31,52 @@ export class MonProfilPage implements OnInit{
   annonces:Annonce[];
   annoncesSubscription:Subscription;
 
+  buttonDisabled:boolean=false;
 
-
-  constructor(public navCtrl: NavController, 
+  constructor(
+    public navCtrl: NavController, 
     public navParams: NavParams,
     private camera:Camera,
     private annonceService:AnnoncesServices,
     private authService:AuthService,
     private toastCtrl:ToastController,
-    private modalCtrl:ModalController) {}
+    private modalCtrl:ModalController) {
 
-  ngOnInit():void{
-
-    this.utilisateurSubscription=this.authService.utilisateurSubject.subscribe(
-      (utilisateur: Utilisateur)=>{
-        this.utilisateur=utilisateur;
-      }
-    )
-    this.authService.loadUserContent();
-    
-    this.annoncesSubscription=this.annonceService.mesAnnoncesSubject.subscribe(
-          (annonces:Annonce[])=>{
-            this.annonces=annonces;
+        this.utilisateurSubscription=this.authService.utilisateurSubject.subscribe(
+          (utilisateur: Utilisateur)=>{
+            this.utilisateur=utilisateur;
           }
-    );
-    
-    this.annonceService.loadMesAnnonces(this.utilisateur.id);
-  
-  }
+        )
+        this.authService.emitUser();
+
+    }
+
+    ionViewWillEnter(){
+      this.annonceService.loadMesAnnonces(+this.utilisateur.id).then((annonces:Annonce[])=>{
+        this.annonces=annonces;
+      })  
+    }
 
   ionViewCanEnter() {
     return this.authService.Authentificated();
   }
 
 
+  doRefresh(event){
+    setTimeout(()=>{
+      this.annonceService.loadMesAnnonces(+this.utilisateur.id).then((annonces:Annonce[])=>{
+        this.annonces=annonces;
+      })  
+      event.complete() ;
+    },1000);
+    
+  }
+
   openCamera(){
+    this.buttonDisabled=!this.buttonDisabled;
     const options: CameraOptions = {
       quality: 100,
-      destinationType: this.camera.DestinationType.DATA_URL,
+      destinationType: this.camera.DestinationType.FILE_URI,
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE,
       correctOrientation: true
@@ -76,9 +85,17 @@ export class MonProfilPage implements OnInit{
     this.camera.getPicture(options).then((imageData) => {  
 
       if(imageData){
-        this.modalCtrl.create(AjoutAnnoncePage,{image: imageData}).present();
+        this.buttonDisabled=!this.buttonDisabled;
+        let toast= this.toastCtrl.create({
+          message:'L\'image a été bien importée',
+          duration:2000,
+          position:'top'
+        });
+        toast.present();
+        let imageURL = (<any>window).Ionic.WebView.convertFileSrc(imageData);
+        this.modalCtrl.create(AjoutAnnoncePage,{image: imageURL}).present();
       }
-    this.camera.cleanup();
+
     }).catch((error) => {
 
       this.toastCtrl.create({
@@ -92,9 +109,10 @@ export class MonProfilPage implements OnInit{
   }
 
   openGallery(){ 
+    this.buttonDisabled=!this.buttonDisabled;
     const options: CameraOptions = {
       quality: 100,
-      destinationType: this.camera.DestinationType.DATA_URL,
+      destinationType: this.camera.DestinationType.FILE_URI,
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE,
       sourceType:this.camera.PictureSourceType.PHOTOLIBRARY,
@@ -104,11 +122,18 @@ export class MonProfilPage implements OnInit{
     this.camera.getPicture(options).then((imageData) => {
     
       if(imageData){
-       this.modalCtrl.create(AjoutAnnoncePage,{image: imageData}).present();
+        this.buttonDisabled=!this.buttonDisabled;
+        let toast= this.toastCtrl.create({
+          message:'L\'image a été bien importée',
+          duration:2000, 
+          position:'top'
+        });
+        toast.present();
+      let imageURL = (<any>window).Ionic.WebView.convertFileSrc(imageData);
+       this.modalCtrl.create(AjoutAnnoncePage,{image: imageURL}).present();
         
       }
 
-     this.camera.cleanup();
     }).catch(
       (error) => {
   

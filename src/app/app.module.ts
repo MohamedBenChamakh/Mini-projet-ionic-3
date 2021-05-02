@@ -1,3 +1,4 @@
+
 import { DatabaseService } from './../services/database.service';
 
 import { Camera } from '@ionic-native/camera';
@@ -16,6 +17,8 @@ import { AnnoncePage } from '../pages/annonce/annonce';
 import { AnnoncesServices } from '../services/annonces.service';
 import { AuthService } from '../services/auth.service';
 import { AjoutAnnoncePage } from '../pages/ajout-annonce/ajout-annonce';
+import { SQLite } from '@ionic-native/sqlite';
+
 
 @NgModule({
   declarations: [
@@ -42,13 +45,13 @@ import { AjoutAnnoncePage } from '../pages/ajout-annonce/ajout-annonce';
     AjoutAnnoncePage
   ],
   providers: [
-    AnnoncesServices,
-    DatabaseService,
     AuthService,
+    AnnoncesServices,
     StatusBar,
     SplashScreen,
     Camera,
-
+    SQLite,
+    DatabaseService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

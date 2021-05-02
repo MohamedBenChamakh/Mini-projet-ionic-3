@@ -1,31 +1,17 @@
+import { DatabaseService } from './database.service';
 import { Subject } from "rxjs";
 import { Utilisateur } from "../models/Utilisateur";
+import { Injectable } from '@angular/core';
 
+@Injectable()
 export class AuthService{
     isAuth=false;
     utilisateur:Utilisateur;
     utilisateurSubject=new Subject<Utilisateur>();
   
-    utilisateurs:Utilisateur[]=[
-        {
-            id:0,
-            nom:"Ben Chamakh",
-            prenom:"Mohamed",
-            email:"mohamed@gmail.com",
-            passwd:"mohamed123",
-            tel:"12345678"
-        },
-        {
-            id:1,
-            nom:"Ben Salah",
-            prenom:"Ali",
-            email:"Ali@gmail.com",
-            passwd:"Ali987654",
-            tel:"87654321"
-           }
-    ];
+
     
-    constructor(){
+    constructor(public databaseService:DatabaseService){
       
     }
 
@@ -34,32 +20,36 @@ export class AuthService{
     SignIn(email:string,passwd:string){
         return new Promise(
             (resolve,reject)=>{
-                       console.log("signIn");
-                       this.utilisateur=this.utilisateurs.find(function(element){
-                        return (element.email==email && element.passwd==passwd)
-                       } );
-                       if(this.utilisateur!=null) {
-                           this.isAuth=true;
-                           this.emitUser();
-                           resolve(this.utilisateur.id);
-                       }
-                       else{
-                        this.utilisateur=null;
-                        reject(this.isAuth);
-                       }
-                      
+                       this.databaseService.db.executeSql('SELECT * FROM UTILISATEUR WHERE EMAIL=\''+email+'\' AND PASSWD=\''+passwd+'\'',{})
+                       .then((data)=>{
+                                if(data.rows.length==0) {
+                                    reject(this.isAuth);}
+                                else{
+                                   
+                                        this.utilisateur=new Utilisateur(+data.rows.item(0).ID,data.rows.item(0).NOM,data.rows.item(0).PRENOM,data.rows.item(0).EMAIL,data.rows.item(0).PASSWD,data.rows.item(0).TEL);
+                            
+                                        this.isAuth=true;
+                                        this.emitUser();
+                                        resolve(this.utilisateur.prenom);
+                                    }
+   
+                        });
+   
                   })
             
      }
 
-     loadUserContent(){
-         this.emitUser();
-     }
-
+    
      LogOut(){
-         this.utilisateur=null;
-         this.isAuth=false;
-         this.emitUser();
+         return new Promise(
+             (resolve,reject)=>{
+                this.utilisateur=null;
+                this.isAuth=false;
+                this.emitUser();
+                resolve(true);
+             }
+         )
+
      }
 
      Authentificated(){

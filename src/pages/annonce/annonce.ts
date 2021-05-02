@@ -18,7 +18,7 @@ import { AuthService } from '../../services/auth.service';
   selector: 'page-annonce',
   templateUrl: 'annonce.html',
 })
-export class AnnoncePage implements OnInit{
+export class AnnoncePage {
   annonce : Annonce;
   utilisateur:Utilisateur;
   utilisateurSubscription:Subscription;
@@ -27,20 +27,21 @@ export class AnnoncePage implements OnInit{
      public navParams: NavParams,
      private authService:AuthService,
      private annoncesServices:AnnoncesServices,
-     private alertCtrl:AlertController) {
+     private alertCtrl:AlertController) {   
+
   }
-  ngOnInit(): void {
-    this.annonce=this.navParams.get("annonce");    
+  
+  ionViewWillEnter(){
+
+    this.annonce=this.navParams.get("annonce");  
+        
     this.utilisateurSubscription=this.authService.utilisateurSubject.subscribe(
       (utilisateur: Utilisateur)=>{
         this.utilisateur=utilisateur;
       }
     )
-    this.authService.loadUserContent();
-  }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad AnnoncePage');
+    this.authService.emitUser();
+  
   }
 
   close(){
