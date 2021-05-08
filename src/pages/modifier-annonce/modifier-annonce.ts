@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Camera, CameraOptions } from '@ionic-native/camera';
-import { AlertController, IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
+import { ActionSheetController, AlertController, IonicPage, NavController, NavParams, ToastController, ViewController } from 'ionic-angular';
 import { Annonce } from '../../models/Annonce';
 import { AnnoncesServices } from '../../services/annonces.service';
 
@@ -26,9 +26,11 @@ export class ModifierAnnoncePage {
       public navParams: NavParams,
       private formBuilder: FormBuilder,
       private camera:Camera,
+      private view:ViewController,
       private toastCtrl:ToastController,
       private annoncesService:AnnoncesServices,
-      private alertCtrl:AlertController
+      private alertCtrl:AlertController,
+      private actionSheetCtrl:ActionSheetController
     ) {
     this.initForm();
   }
@@ -64,6 +66,22 @@ export class ModifierAnnoncePage {
  
   }
 
+  async onChoice(){
+    const actionSheet= await this.actionSheetCtrl.create({
+      title: 'Importer une photo',
+      buttons: [{
+        text:'Galerie',
+        icon:'photos',
+        handler:()=>this.openGallery()
+      },{
+        text:'Appareil photo',
+        icon: 'camera',
+        handler: () =>this.openCamera()
+      }]
+    })
+    actionSheet.present();
+  }
+
   openGallery(){ 
     const options: CameraOptions = {
       quality: 100,
@@ -94,7 +112,7 @@ export class ModifierAnnoncePage {
       this.toastCtrl.create({
         message: error.message,
         duration:3000,
-        position:'bottom'
+        position:'top'
       }).present();
       
 
@@ -112,7 +130,8 @@ export class ModifierAnnoncePage {
     for(let control of this.getDescriptionArray().controls){
       description.push(control.value);
     }
-    this.annoncesService.modifier(new Annonce(this.annonce.id,form['nom'],form['prix'],description,this.image,this.annonce.utilisateur)).then(
+    const annonce=new Annonce(this.annonce.id,form['nom'],form['prix'],description,this.image,this.annonce.utilisateur);
+    this.annoncesService.modifier(annonce).then(
       (resolve)=>{
         const alert = this.alertCtrl.create({
           title: 'Succés',
@@ -120,7 +139,7 @@ export class ModifierAnnoncePage {
           buttons: ['D\'accord']
         });
         alert.present();
-        this.navCtrl.pop();
+        this.view.dismiss(annonce);
       },(reject)=>{
         const alert = this.alertCtrl.create({
           title: 'Erreur',
@@ -130,5 +149,41 @@ export class ModifierAnnoncePage {
         alert.present();
       });
   }
+
+
+  openCamera(){
+    const options: CameraOptions = {
+      quality: 100,
+      destinationType: this.camera.DestinationType.FILE_URI,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE,
+      correctOrientation: true
+    }
+    
+    this.camera.getPicture(options).then((imageData) => {  
+
+      if(imageData){
+        let toast= this.toastCtrl.create({
+          message:'L\'image a été bien importée',
+          duration:2000,
+          position:'top'
+        });
+        toast.present();
+        let imageURL = (<any>window).Ionic.WebView.convertFileSrc(imageData);
+        this.image=imageURL;
+      }
+
+    }).catch((error) => {
+
+      this.toastCtrl.create({
+        message: error.message,
+        duration:3000,
+        position:'top'
+      }).present();
+
+      this.camera.cleanup();
+    });
+  }
+
 
 }

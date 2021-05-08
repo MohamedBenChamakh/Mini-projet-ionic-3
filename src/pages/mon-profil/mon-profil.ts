@@ -111,7 +111,6 @@ export class MonProfilPage {
         position:'bottom'
       }).present();
 
-      this.camera.cleanup();
     });
   }
 
@@ -154,12 +153,15 @@ export class MonProfilPage {
       }).present();
       
 
-     this.camera.cleanup();
     });
   }
   
   onLoadAd(annonce:Annonce){ 
-    this.navCtrl.push(AnnoncePage,{annonce:annonce});
+    let modal=this.modalCtrl.create(AnnoncePage,{annonce:annonce});
+    modal.onDidDismiss(()=>{
+      this.ionViewWillEnter()
+    })
+    modal.present();    
   }
 
   ngOnDestroy() {

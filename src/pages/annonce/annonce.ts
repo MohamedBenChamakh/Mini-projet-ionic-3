@@ -49,6 +49,9 @@ export class AnnoncePage {
 
   modifier(){
     let modal=this.modalCtrl.create(ModifierAnnoncePage,{annonce:this.annonce});
+    modal.onDidDismiss((annonce:Annonce)=>{
+      if(annonce!=null)  this.annonce=annonce;
+    })
     modal.present();
   }
 
@@ -78,7 +81,7 @@ export class AnnoncePage {
               }
             );
             alert.present();
-            this.navCtrl.pop();
+            this.navCtrl.pop(); 
           })
         }
       

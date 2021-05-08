@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import {  SQLiteObject } from '@ionic-native/sqlite';
 import { LoadingController, Platform, ToastController } from 'ionic-angular';
 import { SQLite } from '@ionic-native/sqlite';
-import { Utilisateur } from '../models/Utilisateur';
 import { Annonce } from '../models/Annonce';
 
 @Injectable()

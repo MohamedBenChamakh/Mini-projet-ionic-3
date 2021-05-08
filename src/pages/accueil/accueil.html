@@ -3,7 +3,7 @@
 
 <ion-header  no-border padding>
   <ion-toolbar>
-    <ion-searchbar placeholder="Recherche..."  (ionInput)="getItems($event)" no-padding  ></ion-searchbar>
+    <ion-searchbar placeholder="Recherche..."  (ionInput)="getItems($event)" (ionCancel)="onCancel($event)" (ionClear)="onCancel($event)"   showCancelButton="true" animated="true" cancelButtonText="Annuler" no-padding  ></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
@@ -13,7 +13,10 @@
   </ion-refresher>
   <ion-grid style="height: 100%" *ngIf="annonces==null || annonces.length==0">
     <ion-row justify-content-center align-items-center text-center  style="height: 75%">
-    <h2 >Il n'y a aucune annonce à afficher <br> pour le moment  </h2>
+    <h2 >Il n'y a aucune annonce à afficher <br> pour le moment  <br>
+      <small>Dans le cas où les annonces ne s'affichent pas correctement 
+        veuillez rafraichir la page.</small></h2>
+
     </ion-row>
   </ion-grid>
 
