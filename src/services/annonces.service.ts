@@ -4,7 +4,6 @@ import { Utilisateur } from './../models/Utilisateur';
 import { Injectable } from "@angular/core";
 import { Subject } from "rxjs/Subject";
 import { Annonce } from "../models/Annonce";
-import { DatabaseService } from "./database.service";
 
 
 
@@ -73,7 +72,11 @@ export class AnnoncesServices {
     return new Promise(
       (resolve,reject)=>{
         if(annonce==null) reject(false); 
-        annonce.id=this.annonces.length+1;
+        let maxIndex=0;
+        this.annonces.forEach(element => {
+          if(element.id>maxIndex) maxIndex=element.id;
+        });
+        annonce.id=maxIndex+1;
         this.db.executeSql("INSERT INTO ANNONCE VALUES('"+annonce.id+"','"+annonce.utilisateur.id+"','"+annonce.nom+"','"+annonce.prix+"','"+annonce.description+"','"+annonce.photo+"') ",{})
         .then(()=>{
             this.annonces.push(annonce);
@@ -117,7 +120,6 @@ export class AnnoncesServices {
       
       });
 
-    // this.mesAnnonces=this.annonces.filter(element=> element.utilisateur.id==id);
 
   }
 

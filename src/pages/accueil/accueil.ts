@@ -22,6 +22,7 @@ export class AccueilPage {
   annonces : Annonce[];
   annoncesSubscription : Subscription;
   infiniteScroll:any;
+  refresh:any;
 
   constructor(
     private loadingCtrl:LoadingController,
@@ -56,6 +57,7 @@ export class AccueilPage {
   }
 
   doInfinite(event){
+    this.refresh=event;
     if(this.infiniteAnnonces.length==this.annonces.length){
       this.toastCtrl.create({
         message:'Liste terminée',
@@ -86,16 +88,22 @@ export class AccueilPage {
   }
 
   getItems(event:any){
-
-    this.ionViewWillEnter();
-
     const valeur=event.target.value;
 
     if(valeur && valeur.trim()!= ''){
-      this.annonces=this.annonces.filter((annonce)=>{
+      this.infiniteAnnonces=this.annonces.filter((annonce)=>{
         return (annonce.nom.toLowerCase().indexOf(valeur.toLowerCase()))>-1;
       })
+      if(this.refresh!=null) this.refresh.enable(true);
+      if(this.infiniteScroll!=null) this.infiniteScroll.enable(true);
+  
     }
+  }
+
+  onCancel(event:any){
+    if(this.refresh!=null) this.refresh.enable(false);
+    if(this.infiniteScroll!=null) this.infiniteScroll.enable(false);
+    this.annonceService.emitAnnonces()
   }
 
 }

@@ -3,7 +3,7 @@
 
 <ion-header  no-border padding>
   <ion-toolbar>
-    <ion-searchbar placeholder="Recherche..."  (ionInput)="getItems($event)" no-padding  ></ion-searchbar>
+    <ion-searchbar placeholder="Recherche..."  (ionInput)="getItems($event)" (ionCancel)="onCancel($event)" (ionClear)="onCancel($event)"   showCancelButton="true" animated="true" cancelButtonText="Annuler" no-padding  ></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 

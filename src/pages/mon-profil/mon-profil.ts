@@ -159,7 +159,11 @@ export class MonProfilPage {
   }
   
   onLoadAd(annonce:Annonce){ 
-    this.navCtrl.push(AnnoncePage,{annonce:annonce});
+    let modal=this.modalCtrl.create(AnnoncePage,{annonce:annonce});
+    modal.onDidDismiss(()=>{
+      this.ionViewWillEnter();
+    })
+    modal.present();    
   }
 
   ngOnDestroy() {
