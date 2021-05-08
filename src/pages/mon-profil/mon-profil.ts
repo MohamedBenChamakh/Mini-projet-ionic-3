@@ -48,6 +48,7 @@ export class MonProfilPage {
           }
         )
         this.authService.emitUser();
+      
 
     }
 
@@ -56,6 +57,8 @@ export class MonProfilPage {
         this.annonces=annonces;
       })  
     }
+
+ 
 
   ionViewCanEnter() {
     return this.authService.Authentificated();
@@ -93,7 +96,11 @@ export class MonProfilPage {
         });
         toast.present();
         let imageURL = (<any>window).Ionic.WebView.convertFileSrc(imageData);
-        this.modalCtrl.create(AjoutAnnoncePage,{image: imageURL}).present();
+        let modal =this.modalCtrl.create(AjoutAnnoncePage,{image: imageURL});
+        modal.onDidDismiss(()=>{
+          this.ionViewWillEnter();
+        })
+        modal.present();
       }
 
     }).catch((error) => {
@@ -130,8 +137,11 @@ export class MonProfilPage {
         });
         toast.present();
       let imageURL = (<any>window).Ionic.WebView.convertFileSrc(imageData);
-       this.modalCtrl.create(AjoutAnnoncePage,{image: imageURL}).present();
-        
+      let modal =this.modalCtrl.create(AjoutAnnoncePage,{image: imageURL});
+      modal.onDidDismiss(()=>{
+        this.ionViewWillEnter();
+      })
+      modal.present();
       }
 
     }).catch(

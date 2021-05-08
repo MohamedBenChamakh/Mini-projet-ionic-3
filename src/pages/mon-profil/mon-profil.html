@@ -34,8 +34,8 @@
   </ion-list>
   <ion-list >
     <ion-list-header>Mes annonces</ion-list-header>
-    <ion-item>
-      <h2 text-center *ngIf="annonce==null || annonce.length==0">Vous n'avez encore aucune annonce</h2>
+    <ion-item *ngIf="annonces==null || annonces.length==0">
+      <h2 text-center >Vous n'avez encore aucune annonce</h2>
     </ion-item>
     <ion-item *ngFor="let annonce of annonces">
       <ion-thumbnail item-start>

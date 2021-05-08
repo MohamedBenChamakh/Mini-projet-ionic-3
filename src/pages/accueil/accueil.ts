@@ -42,7 +42,7 @@ export class AccueilPage {
 
 
   ionViewWillEnter(){
-    setTimeout(()=>{this.annonceService.emitAnnonces()},1000)
+    setTimeout(()=>{this.annonceService.emitAnnonces()},2000)
   }
 
   doRefresh(event){

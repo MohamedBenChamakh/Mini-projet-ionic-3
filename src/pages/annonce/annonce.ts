@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { ModalController } from 'ionic-angular';
 import { AlertController, IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Subscription } from 'rxjs/Subscription';
 import { Annonce } from '../../models/Annonce';
 import { Utilisateur } from '../../models/Utilisateur';
 import { AnnoncesServices } from '../../services/annonces.service';
 import { AuthService } from '../../services/auth.service';
+import { ModifierAnnoncePage } from '../modifier-annonce/modifier-annonce';
 
 /**
  * Generated class for the AnnoncePage page.
@@ -25,6 +27,7 @@ export class AnnoncePage {
 
   constructor(public navCtrl: NavController,
      public navParams: NavParams,
+     private modalCtrl:ModalController,
      private authService:AuthService,
      private annoncesServices:AnnoncesServices,
      private alertCtrl:AlertController) {   
@@ -34,7 +37,7 @@ export class AnnoncePage {
   ionViewWillEnter(){
 
     this.annonce=this.navParams.get("annonce");  
-        
+    this.annonce.description=this.annonce.description.toString().split(',');
     this.utilisateurSubscription=this.authService.utilisateurSubject.subscribe(
       (utilisateur: Utilisateur)=>{
         this.utilisateur=utilisateur;
@@ -42,6 +45,11 @@ export class AnnoncePage {
     )
     this.authService.emitUser();
   
+  }
+
+  modifier(){
+    let modal=this.modalCtrl.create(ModifierAnnoncePage,{annonce:this.annonce});
+    modal.present();
   }
 
   close(){

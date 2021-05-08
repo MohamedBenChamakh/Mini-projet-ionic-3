@@ -23,14 +23,17 @@
 
     </ion-item>
     <img [src]="annonce.photo" *ngIf="annonce.photo!=null" />
-    <ion-card-content>
+    <ion-card-content margin>
       <ion-card-title text-capitalize> {{annonce.nom}}</ion-card-title>
-      <p text-capitalize>{{annonce.description}}</p>
-      <p>{{annonce.prix}}DT</p> 
+      <div *ngFor="let control of annonce.description" >
+        <p text-capitalize >{{control}}</p>
+      </div>
+
+      <p>Prix : {{annonce.prix}}DT</p> 
     </ion-card-content>
     <ion-row *ngIf="utilisateur!=null && annonce.utilisateur.id==utilisateur.id">
       <ion-col align-self-start text-start>
-        <button ion-button clear color="secondary">
+        <button ion-button clear color="secondary" (click)="modifier()">
           <ion-icon  ios="ios-create" md="md-create" margin-right></ion-icon> Editer
         </button>
       </ion-col>

@@ -3,7 +3,7 @@
     <name>Mini projet</name>
     <description>Projet Ionic V3</description>
     <author email="hi@ionicframework.com" href="http://ionicframework.com/">Ionic Framework Team</author>
-    <content original-src="index.html" src="http://192.168.1.2:8100" />
+    <content original-src="index.html" src="http://192.168.1.9:8100" />
     <access origin="*" />
     <preferance name="android:usesCleartextTraffic" value="true" />
     <allow-intent href="http://*/*" />
@@ -104,4 +104,5 @@
     <allow-navigation href="http://192.168.1.10:8100" />
     <allow-navigation href="http://192.168.1.5:8100" />
     <allow-navigation href="http://192.168.1.2:8100" />
+    <allow-navigation href="http://192.168.1.9:8100" />
 </widget>

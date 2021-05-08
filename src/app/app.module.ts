@@ -18,6 +18,7 @@ import { AnnoncesServices } from '../services/annonces.service';
 import { AuthService } from '../services/auth.service';
 import { AjoutAnnoncePage } from '../pages/ajout-annonce/ajout-annonce';
 import { SQLite } from '@ionic-native/sqlite';
+import { ModifierAnnoncePage } from '../pages/modifier-annonce/modifier-annonce';
 
 
 @NgModule({
@@ -28,7 +29,8 @@ import { SQLite } from '@ionic-native/sqlite';
     AccueilPage,
     AnnoncePage,
     TabsPage,
-    AjoutAnnoncePage
+    AjoutAnnoncePage,
+    ModifierAnnoncePage
   ],
   imports: [
     BrowserModule,
@@ -42,7 +44,8 @@ import { SQLite } from '@ionic-native/sqlite';
     AccueilPage,
     AnnoncePage,
     TabsPage,
-    AjoutAnnoncePage
+    AjoutAnnoncePage,
+    ModifierAnnoncePage
   ],
   providers: [
     AuthService,

@@ -1,26 +1,30 @@
 <ion-content >
-  <ion-grid style="height: 100%" *ngIf="image==null">
+  <ion-grid style="height: 100%" *ngIf="annonce==null">
     <ion-row justify-content-center align-items-center style="height: 100%">
       <ion-spinner name="crescent"  ></ion-spinner>
     </ion-row>
   </ion-grid>
- <ion-grid *ngIf="image">
+ <ion-grid *ngIf="annonce">
    <ion-row padding>
-    <h3>Nouvelle annonce </h3>
+    <h3>{{ annonce.nom }} </h3>
    </ion-row>
    <ion-row>
     <ion-card   >
-      <img [src]="image" class="article-img"  />
+      <button ion-button round color="light" class="under-img" (click)="openGallery()" > 
+        <ion-icon name="photos" margin-right></ion-icon> Changer
+      </button>
+      <img [src]="image" class="article-img "  />
+
       <ion-card-content>
-          <form [formGroup]="adForm">
+          <form [formGroup]="formGroup">
               <ion-list no-padding>
                 <ion-item >
                   <ion-label floating>Nom de l'article</ion-label>
-                  <ion-input type="text" required formControlName="nom"></ion-input>
+                  <ion-input type="text" [value]="annonce.nom" required formControlName="nom"></ion-input>
                 </ion-item>
                 <ion-item>
                   <ion-label floating>Prix </ion-label>
-                  <ion-input type="number" required formControlName="prix"></ion-input>
+                  <ion-input type="number" [value]="annonce.prix" required formControlName="prix"></ion-input>
                 </ion-item>
                 <ion-item-divider>Description </ion-item-divider>
                   <div formArrayName="description">
@@ -37,7 +41,7 @@
                  
             
               </ion-list>
-              <button ion-button round margin-top margin-bottom float-right color="primary" [disabled]="adForm.invalid" (click)="onSubmit()">Confirmer</button>
+              <button ion-button round margin-top margin-bottom float-right color="primary" [disabled]="formGroup.invalid" (click)="onSubmit()">Enregistrer</button>
               <button ion-button round margin-top margin-bottom float-right color="light"  (click)="close()">Annuler</button>
             </form>
       </ion-card-content>

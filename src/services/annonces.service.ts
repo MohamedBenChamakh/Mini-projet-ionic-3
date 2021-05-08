@@ -10,6 +10,7 @@ import { DatabaseService } from "./database.service";
 
 @Injectable()
 export class AnnoncesServices {
+
   annonces:Annonce[]=[];
   annoncesSubject = new Subject<Annonce[]>();
   
@@ -120,7 +121,25 @@ export class AnnoncesServices {
 
   }
 
+  modifier(annonce: Annonce) {
+    return new Promise(
+      (resolve,reject)=>{
 
+        this.db.executeSql("UPDATE ANNONCE SET NOM_ANNONCE='"+annonce.nom+"' , PRIX='"+annonce.prix+"' , DESCRIPTION='"+annonce.description+"' , PHOTO='"+annonce.photo+"' WHERE ID_ANNONCE='"+annonce.id+"' ",{})
+        .then(()=>{
+          let index= this.annonces.findIndex(element=>element.id==annonce.id);
+          this.annonces[index]=annonce;
+          this.emitAnnonces();
+            resolve(true);
+        })
+        .catch(error=>{ reject(error.message)})
+
+
+
+
+        resolve(true);
+      })
+  }
   
 
   emitAnnonces(){

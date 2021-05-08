@@ -8,7 +8,7 @@ export class Annonce{
         public id:number,
         public nom:string,
         public prix:number,
-        public description:string,
+        public description=[],
         public photo:string,
         public utilisateur:Utilisateur){}
 }

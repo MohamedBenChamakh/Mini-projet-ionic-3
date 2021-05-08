@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlertController, IonicPage, NavController, NavParams, normalizeURL, ToastController } from 'ionic-angular';
 import { Subscription } from 'rxjs';
 import { Annonce } from '../../models/Annonce';
@@ -51,19 +51,36 @@ export class AjoutAnnoncePage implements OnInit {
  
   }
 
-  ionViewDidLoad() {}
 
   initForm(){
     this.adForm=this.formBuilder.group({
       nom:['',Validators.required],
-      prix:[0,Validators.required],
-      description:['']
+      prix:[,Validators.required],
+      description: this.formBuilder.array([])
     })
+  }
+
+  getDescriptionArray(){
+    return this.adForm.get('description') as FormArray;
+  }
+
+  onAddDescription(){
+    let newControl=this.formBuilder.control('');
+    this.getDescriptionArray().controls.push(newControl);
+  }
+
+  onRemoveDescription(index:number){
+    this.getDescriptionArray().removeAt(index);
+ 
   }
 
   onSubmit(){
     const form=this.adForm.value;
-    this.annoncesService.ajouter(new Annonce(null,form['nom'],form['prix'],form['description'],this.image,this.utilisateur)).then(
+    let description=[];
+    for(let control of this.getDescriptionArray().controls){
+      description.push(control.value);
+    }
+    this.annoncesService.ajouter(new Annonce(null,form['nom'],form['prix'],description,this.image,this.utilisateur)).then(
       (resolve)=>{
         const alert = this.alertCtrl.create({
           title: 'Succés',

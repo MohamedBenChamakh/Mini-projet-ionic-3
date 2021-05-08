@@ -1,5 +1,5 @@
-page-ajout-annonce {
-      ion-card{
+page-modifier-annonce {
+    ion-card{
         border-radius:20px !important;
       }
       ion-spinner * {
@@ -10,5 +10,8 @@ page-ajout-annonce {
         width: 0px;
         height: 0px;
         }
-     
+        .under-img{
+          z-index: 10 !important;
+          position: absolute;
+        }
 }
